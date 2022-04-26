@@ -1,0 +1,134 @@
+<html>
+<head>
+<title>AV2 IA arthur</title>
+</head>
+<body style=" background: lightblue;">
+    <center>
+        <canvas id="canvas" width="620px" height="620px" style="background: #fff; magrin:20px;"></canvas>
+    </center>
+    <script type="text/javascript" language="javascript" src="./operador.js"></script>
+    <script type="text/javascript" language="javascript" src="./PathFinderAgent.js"></script>
+    <script type="text/javascript" language="javascript" src="./BFS.js"></script>
+    <script type="text/javascript" language="javascript" src="./DFS.js"></script>
+    <script type="text/javascript" language="javascript" src="./UCS.js"></script>
+
+    <script type="text/javascript" language="javascript" src="./Bmp.js"></script>
+    <script type="text/javascript" language="javascript" src="./AStar.js"></script>
+    <script type="text/javascript" language="javascript">
+    var bw = 600;
+    var bh = 600;
+    var p = 10;//margem
+    //var cw = bw + (p*2) + 1;
+    //var ch = bh + (p*2) + 1;
+    
+    // var map =[
+    //     [-1,0,1,1,1,0,0,0,0,0],
+    //     [0,0,0,0,0,0,0,0,0,0],
+    //     [0,0,0,0,0,0,0,0,0,0],
+    //     [0,0,0,0,1,0,0,0,0,0],
+    //     [0,0,0,0,1,0,0,0,0,0],
+    //     [1,0,0,1,1,1,0,0,0,0],
+    //     [0,1,0,0,0,0,1,0,0,0],
+    //     [0,0,1,0,0,0,0,1,0,0],
+    //     [0,0,0,1,1,1,0,0,1,1],
+    //     [0,0,0,0,0,0,1,0,0,0]];
+
+    var map =[
+        [-1,0,1,1,1,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0,0,0],
+        [0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,0,1,0,0,0,0,0],
+        [0,0,0,1,1,1,0,0,0,0],
+        [0,1,0,0,0,0,1,0,0,0],
+        [0,0,1,0,0,0,0,1,0,0],
+        [0,0,0,1,1,1,0,0,1,1],
+        [0,0,0,0,0,0,1,0,0,0]];
+
+        // var map =[
+        // [-1,0,1,1,1,0,0,0,0,0],
+        // [0,0,0,0,0,0,0,0,0,0],
+        // [0,0,0,0,0,0,0,0,0,0],
+        // [1,0,0,0,1,0,0,0,0,0],
+        // [0,0,0,0,1,0,0,0,0,0],
+        // [0,0,0,1,1,1,0,0,0,0],
+        // [0,1,0,0,0,0,1,0,0,0],
+        // [0,0,1,0,0,0,0,1,0,0],
+        // [0,0,0,1,1,1,0,0,1,1],
+        // [0,0,0,0,0,0,1,0,0,0]];
+    // map=[
+    //     [-1,1,0],
+    //     [0,0,0],
+    //     [0,0,0]]
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    function drawBoard(NSquares){
+        SquareSide = Math.trunc(bw/NSquares)
+        for (var x = 0; x <= bw; x += SquareSide) {
+            context.moveTo(0.5 + x + p, p);
+            context.lineTo(0.5 + x + p, bh + p);
+        }
+
+        for (var x = 0; x <= bh; x += SquareSide) {
+            context.moveTo(p, 0.5 + x + p);
+            context.lineTo(bw + p, 0.5 + x + p);
+        }
+
+        context.strokeStyle = "black";
+        context.stroke();
+    }
+    function drawsquares(NSquares,m){
+        //var c = document.getElementById("myCanvas");
+        //var ctx = c.getContext("2d");
+        SquareSide = Math.trunc(bw/NSquares)
+        for (var y = 0; y < NSquares; y += 1) {
+            for (var x = 0; x < NSquares; x += 1) {
+                context.beginPath();
+                //context.rect(x, x, 0.5 + x + p, p); efeito legal, deformaçao
+                context.rect(x*SquareSide + p,p+(y*SquareSide), SquareSide, SquareSide);
+
+                if(m[y][x]==0){
+                    context.fillStyle = "white";
+                }
+                if(m[y][x]==1){
+                    context.fillStyle = "black";
+                }
+                if(m[y][x]==-3){
+                    context.fillStyle = "rgb(200,240,200)";
+                }
+                if(m[y][x]==2){
+                    context.fillStyle = "green";
+                }
+                if(m[y][x]==10){
+                    context.fillStyle = "red";
+                }
+                //context.strokeStyle = "black";
+                context.fill();
+                context.stroke();
+            }
+        }
+
+        // for (var x = 0; x <= bh; x += SquareSide) {
+        //     context.moveTo(p, 0.5 + x + p);
+        //     context.lineTo(bw + p, 0.5 + x + p);
+        // }
+
+        // context.strokeStyle = "black";
+        // context.stroke();
+    }
+
+
+
+
+    //var inicial = new PathFinderAgent(map,"e1",{"x":0,"y":0})
+    var resultado = Ucs(map,{"x":9,"y":9})
+    //var testando = new Operador(inicial,{"x":9,"y":9});
+    //testando.run();
+    
+
+    //drawsquares(map.length,map);
+    //drawBoard(map.length);
+</script>
+</body>
+</html>
+

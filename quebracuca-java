@@ -1,0 +1,119 @@
+public class QuebraCuca {
+    int[][] estado;
+    int cordX;
+    int cordY;
+    String estadoDaTentativa;
+    QuebraCuca pai;
+
+    public QuebraCuca(int[][] estado,String EstDaTent, QuebraCuca pai) {
+        this.estado = estado;
+        this.estadoDaTentativa = EstDaTent;
+        this.pai = pai;;
+        for(int i =0;i<estado.length;i++){
+            for(int j =0;j<estado[0].length;j++){
+                if(estado[i][j] <= 0){
+                    cordX = i;
+                    cordY = j;
+                }
+            }
+        }
+    }
+
+    public boolean moverPraCima(){
+        if(cordY>0){
+            int aux;
+            aux = estado[cordX][cordY];
+            estado[cordX][cordY] = estado[cordX][cordY-1];
+            estado[cordX][cordY-1] = aux;
+            cordY--;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moverPraBaixo(){
+        if(cordY < estado[0].length-1){
+            int aux;
+            aux = estado[cordX][cordY];
+            estado[cordX][cordY] = estado[cordX][cordY+1];
+            estado[cordX][cordY+1] = aux;
+
+            cordY++;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moverPraDireita(){
+        if(cordX>0){
+            int aux;
+            aux = estado[cordX][cordY];
+            estado[cordX][cordY] = estado[cordX-1][cordY];
+            estado[cordX-1][cordY] = aux;
+
+            cordX--;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean moverPraEsquerda(){
+        if(cordX < estado.length-1){
+            int aux;
+            aux = estado[cordX][cordY];
+            estado[cordX][cordY] = estado[cordX+1][cordY];
+            estado[cordX+1][cordY] = aux;
+
+            cordX++;
+            return true;
+        }
+        return false;
+    }
+
+    public int[][] getEstado() {
+        return estado;
+    }
+
+    public void showEstado(){
+        for(int i =0;i<estado.length;i++){
+            for(int j =0;j<estado[0].length;j++){
+                System.out.print(estado[i][j]+" | ");
+            }
+            System.out.println();
+        }
+    }
+
+
+
+    public int getCordX() {
+        return cordX;
+    }
+
+    public int getCordY() {
+        return cordY;
+    }
+
+    public String getEstadoDaTentativa() {
+        return estadoDaTentativa;
+    }
+
+    public QuebraCuca getPai() {
+        return pai;
+    }
+
+    public int[][] cloneMatrix(int[][] a){
+        int [][] t = new int[a.length][];
+        for(int i = 0; i < a.length; i++)
+            t[i] = a[i].clone();
+
+        return t;
+    }
+
+    public QuebraCuca getClone() {
+            // call clone in Object.
+            int[][] auxEstado = cloneMatrix(this.estado);
+            QuebraCuca aux = new QuebraCuca(auxEstado,this.getEstadoDaTentativa(),this.pai);
+            return aux;
+
+    }
+}

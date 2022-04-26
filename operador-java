@@ -1,0 +1,128 @@
+import java.util.ArrayList;
+
+public class Operador {
+
+    int[][] estadoFinal;
+    ArrayList<QuebraCuca> lista = new ArrayList<QuebraCuca>();
+    ArrayList<QuebraCuca> analisados = new ArrayList<QuebraCuca>();
+
+    public Operador(int[][] init, int[][] estadoFinal){
+        this.estadoFinal= estadoFinal;
+        lista.add(new QuebraCuca(init,"E1", null));
+        lista.get(0).showEstado();
+    }
+
+    public boolean comparadorMatrix(int[][]a,int[][]b){
+        if(a.length != b.length){
+            return false;
+        }
+        if(a[0].length != b[0].length){
+            return false;
+        }
+
+        for(int i =0;i<a.length;i++){
+            for(int j =0;j<a[0].length;j++){
+                if(a[i][j]!=b[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public int[][] cloneMatrix(int[][] a){
+        int [][] t = new int[a.length][];
+        for(int i = 0; i < a.length; i++)
+            t[i] = a[i].clone();
+
+        return t;
+    }
+
+    public void run() {
+        QuebraCuca analisar = lista.get(0);
+        analisados.add(analisar);
+        lista.remove(0);
+        int cont = 1;
+
+        if(!comparadorMatrix(analisar.getEstado(),estadoFinal)) {
+
+            QuebraCuca aux;
+            System.out.println(analisar.getEstadoDaTentativa()+" disposição");
+            analisar.showEstado();
+
+            System.out.println("fora mover pra cima");
+            aux = analisar.getClone();
+            aux.showEstado();
+            System.out.println("dentro");
+            if(aux.moverPraCima()) {
+                aux.showEstado();
+                lista.add(new QuebraCuca(cloneMatrix(aux.getEstado()),aux.getEstadoDaTentativa()+cont, analisar));
+                cont++;
+            }
+
+            System.out.println("fora mover pra baixo");
+            aux = analisar.getClone();
+            aux.showEstado();
+            System.out.println("dentro");
+            if(aux.moverPraBaixo()) {
+                aux.showEstado();
+                lista.add(new QuebraCuca(cloneMatrix(aux.getEstado()),aux.getEstadoDaTentativa()+cont, analisar));
+                cont++;
+            }
+
+            System.out.println("fora mover pra direita");
+            aux = analisar.getClone();
+            aux.showEstado();
+            System.out.println("dentro");
+            if(aux.moverPraDireita()) {
+                aux.showEstado();
+                lista.add(new QuebraCuca(cloneMatrix(aux.getEstado()),aux.getEstadoDaTentativa()+cont, analisar));
+                cont++;
+            }
+
+            System.out.println("fora mover pra esquera");
+            aux = analisar.getClone();
+            aux.showEstado();
+            System.out.println("dentro");
+            if(aux.moverPraEsquerda()) {
+                aux.showEstado();
+                lista.add(new QuebraCuca(cloneMatrix(aux.getEstado()),aux.getEstadoDaTentativa()+cont, analisar));
+                cont++;
+            }
+
+
+
+
+            this.run();
+        }else{
+            System.out.println("encontrado solucção");
+            System.out.println(analisar.getEstadoDaTentativa()+" disposição");
+            for(int j =0;j<analisar.getEstado()[0].length;j++){
+                for(int i =0;i<analisar.getEstado().length;i++){
+                    System.out.print(analisar.getEstado()[j][i]+" | ");
+                }
+                System.out.println();
+            }
+
+        }
+    }
+
+
+}
+
+
+    public static void main(String[] args) {
+        int [][] inicial = new int[][] { {0, 1, 3},
+                                         {8, 2, 4},
+                                         {7, 6, 5} };
+
+        int [][] estadoFinal = new int[][] { {1, 2, 3},
+                                             {8, 0, 4},
+                                             {7, 6, 5} };
+
+        Operador testando = new Operador(inicial,estadoFinal);
+
+        testando.run();
+    }
+}
+

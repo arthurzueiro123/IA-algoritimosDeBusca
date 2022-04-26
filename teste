@@ -1,0 +1,78 @@
+//esse efeito fico legal
+
+<html>
+<head>
+<title>AV2 IA arthur</title>
+</head>
+<body style=" background: lightblue;">
+    <center>
+        <canvas id="canvas" width="620px" height="620px" style="background: #fff; magrin:20px;"></canvas>
+    </center>
+    <script type="text/javascript" language="javascript">
+    var bw = 600;
+    var bh = 600;
+    var p = 10;//margem
+    //var cw = bw + (p*2) + 1;
+    //var ch = bh + (p*2) + 1;
+
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    function drawBoard(NSquares){
+        SquareSide = Math.trunc(bw/NSquares)
+        for (var x = 0; x <= bw; x += SquareSide) {
+            context.moveTo(0.5 + x + p, p);
+            context.lineTo(0.5 + x + p, bh + p);
+        }
+
+        for (var x = 0; x <= bh; x += SquareSide) {
+            context.moveTo(p, 0.5 + x + p);
+            context.lineTo(bw + p, 0.5 + x + p);
+        }
+
+        context.strokeStyle = "black";
+        context.stroke();
+    }
+    function drawsquares(NSquares){
+        //var c = document.getElementById("myCanvas");
+        //var ctx = c.getContext("2d");
+        SquareSide = Math.trunc(bw/NSquares)
+        for (var y = 0; y <= bh-SquareSide; y += SquareSide) {
+            for (var x = 0; x <= bw -SquareSide; x += SquareSide) {
+                context.beginPath();
+                //context.rect(x, x, 0.5 + x + p, p); efeito legal, deformaçao
+                context.rect(0.5 + x + p, p+y, SquareSide, SquareSide);
+                //ctx.fillStyle = "rgb(200,220,200)";
+                context.fillStyle = "rgb("+
+                Math.trunc(Math.random()*255)+","+
+                Math.trunc(Math.random()*255)+","+
+                Math.trunc(Math.random()*255)+")";
+                //context.strokeStyle = "black";
+                context.fill();
+                context.stroke();
+            }
+        }
+
+        // for (var x = 0; x <= bh; x += SquareSide) {
+        //     context.moveTo(p, 0.5 + x + p);
+        //     context.lineTo(bw + p, 0.5 + x + p);
+        // }
+
+        // context.strokeStyle = "black";
+        // context.stroke();
+    }
+
+
+
+
+
+
+
+
+    drawsquares(15);
+    drawBoard(15);
+    // drawsquares(60);
+    // drawBoard(60);
+</script>
+</body>
+</html>
+
